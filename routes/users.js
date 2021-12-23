@@ -9,7 +9,7 @@ const router = Router()
 router.get('/', getLoggedInUser)
 router.post('/register', registerValidation, validationMiddleware, register)
 router.post('/login', loginValidation, validationMiddleware, login)
-router.get('/verify-account', verifyAccount)
+router.get('/verify-account/:verificationCode', verifyAccount)
 router.put('/', updateAccount)
 router.delete('/', deleteAccount)
 

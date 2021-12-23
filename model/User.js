@@ -3,6 +3,7 @@ import { hash, compare } from 'bcryptjs'
 import { sign } from 'jsonwebtoken'
 import { randomBytes } from 'crypto'
 import { pick } from 'lodash'
+import { PRIVATE_KEY_PATH } from "../constants/constants"
 import fs from 'fs'
 
 
@@ -53,7 +54,7 @@ UserSchema.methods.comparePassword = async function(password){
 }
 
 UserSchema.methods.generateJwt = async function(){
-    const PRIV_KEY = fs.readFileSync("\D:\\Node Js\\VideoStreamingServer\\crypto\\id_rsa_priv.pem", 'utf8')
+    const PRIV_KEY = fs.readFileSync(PRIVATE_KEY_PATH, 'utf8')
 
     let payload = {
         id: this._id,
