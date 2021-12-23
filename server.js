@@ -33,9 +33,14 @@ app.get('/', (req, res, next)=>{
 
 // routes
 import users from './routes/users'
+import transactions from './routes/transactions'
+import debitCreditHolders from './routes/debitCreditHolders'
 
 
 app.use('/api/v1/users', users)
+app.use('/api/v1/transactions', transactions)
+app.use('/api/v1/debitCreditHolders', debitCreditHolders)
+
 
 
 app.use(async(req, res, next)=>{
