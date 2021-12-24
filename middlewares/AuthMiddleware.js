@@ -7,7 +7,7 @@ const PUBLIC_KEY=fs.readFileSync(PUBLIC_KEY_PATH, 'utf8')
 
 const authenticateUser = async (req, res, next) => {
     const authToken = await req.headers['authorization']
-    if(!authToken) return createError.Unauthorized("Please login!")
+    if(!authToken) return next(createError.Unauthorized("Please login first!"))
     var token = authToken.split(" ")[1]
     JWT.verify(token,PUBLIC_KEY, {algorithms: ['RS256']}, (err, payload)=> {
         if(err){

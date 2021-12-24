@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
+import createError from 'http-errors'
 
 import dotenv from 'dotenv'
 import { PORT } from './constants/constants'

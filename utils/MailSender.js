@@ -30,7 +30,6 @@ class MailSender{
             html: this.text
         }
 
-        console.log(mailOptions, PASSWORD)
         transporter.sendMail(mailOptions, (err, info)=>{
             if(err){
                 console.log(err)
@@ -48,5 +47,5 @@ class MailSender{
 
 export default MailSender;
 
-// const mail = new MailSender('jaccobrths@gmail.com', 'subject', 'message from nodemailer');
-// mail.sendMail();
+const mail = new MailSender('jaccobrths@gmail.com', 'subject', 'message from nodemailer');
+mail.sendMail();

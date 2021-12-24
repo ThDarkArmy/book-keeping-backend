@@ -2,6 +2,7 @@ import User from "../model/User";
 import MailSender from "../utils/MailSender";
 import { randomBytes } from "crypto";
 import createError from "http-errors";
+import {BASE_URL } from '../constants/constants'
 
 
 // get logged in user
@@ -23,23 +24,25 @@ export const getLoggedInUser = async (req, res, next) => {
 // user registration
 export const register = async (req, res, next) => {
   try {
-    const { name, email, password } = req.body;
+    const { firstName, lastName, email, password } = req.body;
+
 
     let user = await User.findOne({ email: email });
 
-    if (user && user.isVerified)
+    if (user && user.verified)
       throw createError.BadRequest("User with given email already exists.");
-    else await User.deleteMany({ email: user.email });
+    else if(user) await User.deleteMany({ email: user.email });
 
-    await new User({
-      name,
+    user = new User({
+      name: firstName +" "+lastName,
       email,
       password,
       verificationCode: randomBytes(20).toString("hex"),
-    }).save();
+    })
+    await user.save();
 
     // sending mail to verify the account
-    let verificationUrl = BASE_URL + "/users/verify/" + user.verificationCode;
+    let verificationUrl = BASE_URL + "/api/v1/users/verify/" + user.verificationCode;
     let html =
       `<div><h2>Please click on the Verify Email to verify your email.</h2></br>` +
       `<a href=${verificationUrl}>Verify Email</a> </div>`;
@@ -86,7 +89,6 @@ export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     let user = await User.findOne({ email: email });
-
     if (!user) throw createError.BadRequest("Invalid Credentials");
     if (!user.verified)
       throw createError.BadRequest("User is yet to be verified.");

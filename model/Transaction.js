@@ -1,4 +1,4 @@
-import { model, Schema, SchemaTypes } from "mongoose";
+import { model, Schema } from "mongoose";
 
 const transactionSchema = new Schema(
   {
@@ -12,11 +12,11 @@ const transactionSchema = new Schema(
       // DEBIT OR CREDIT
     },
     user: {
-      type: SchemaTypes.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
     },
     debitCreditHolder: {
-      type: SchemaTypes.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "DebitCreditHolder",
     },
   },

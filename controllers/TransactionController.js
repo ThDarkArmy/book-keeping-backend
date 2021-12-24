@@ -4,7 +4,7 @@ import createError from "http-errors";
 
 
 // create transaction
-export const createTransaction = async (req, res)=> {
+export const createTransaction = async (req, res, next)=> {
     try{
         const { id, amount, type} = req.body
         let debitCreditHolder = await DebitCreditHolder.findById(id)
@@ -13,7 +13,7 @@ export const createTransaction = async (req, res)=> {
             amount: amount,
             type: type,
             debitCreditHolder: id,
-            user: req.user
+            user: req.user.id
         })
 
         await transaction.save()

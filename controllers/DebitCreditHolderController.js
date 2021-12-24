@@ -5,7 +5,7 @@ import createError from "http-errors";
 // get all debitCreditHolder
 export const getAllDebitCreditHolder = async (req, res, next)=> {
     try{
-        const debitCreditHolders = await DebitCreditHolder({user: req.user._id}).populate("transactions", "-__v")
+        const debitCreditHolders = await DebitCreditHolder.find({user: req.user.id}).populate("transactions", "-__v")
         res.status(200).json({
             success: true,
             message: "All transactions",
@@ -20,13 +20,13 @@ export const getAllDebitCreditHolder = async (req, res, next)=> {
 export const createDebitCreditHolder = async (req, res, next)=> {
     try{
         const { name, mobile} = req.body
-        let debitCreditHolder = await DebitCreditHolder.findOne({mobile: mobile, user: req.user._id})
+        let debitCreditHolder = await DebitCreditHolder.findOne({mobile: mobile, user: req.user.id})
         if(debitCreditHolder) throw createError.BadRequest("Debit or Credit holder already exists")
 
         debitCreditHolder = await new DebitCreditHolder({
             name, 
             mobile,
-            user: req.user._id
+            user: req.user.id
         })
 
         await debitCreditHolder.save()
@@ -43,7 +43,7 @@ export const createDebitCreditHolder = async (req, res, next)=> {
 }
 
 // update a debitCreditHolder
-export const updateDebitCreditHolder = (req, res, next)=> {
+export const updateDebitCreditHolder = async (req, res, next)=> {
     try{
         let debitCreditHolder = await DebitCreditHolder.findById(req.params.id)
         if(!debitCreditHolder) throw createError.BadRequest("Debit or Credit holder does not exists")
@@ -68,7 +68,7 @@ export const updateDebitCreditHolder = (req, res, next)=> {
 
 
 // delete a debitCreditHolder
-export const deleteDebitCreditHolder = (req, res, next)=> {
+export const deleteDebitCreditHolder = async (req, res, next)=> {
     try{
         await DebitCreditHolder.findByIdAndDelete(req.params.id)
         res.status(201).json({
