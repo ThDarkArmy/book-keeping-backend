@@ -3,6 +3,7 @@ import DebitCreditHolder from "../model/DebitCreditHolder";
 import createError from "http-errors";
 
 
+
 // create transaction
 export const createTransaction = async (req, res, next)=> {
     try{
@@ -37,13 +38,14 @@ export const createTransaction = async (req, res, next)=> {
 
 
 // get transaction
-export const getAllTransactionsByUser = async (req, res)=> {
+export const getAllTransactionsByUser = async (req, res, next)=> {
     try{
-        const transactions = await Transaction.find({debitCreditHolder: req.params.id})
+        // const transactions = await Transaction.find({debitCreditHolder: req.params.id})
+        const debitCreditHolder = await DebitCreditHolder.findById(req.params.id).populate("transactions", "-__v")
         res.status(201).json({
             success: true,
             message: "All transactions",
-            body: transactions
+            body: debitCreditHolder
         })
     }catch(err){
         next(err)
@@ -51,7 +53,7 @@ export const getAllTransactionsByUser = async (req, res)=> {
 }
 
 // delete transaction
-export const deleteTransaction = async (req, res)=> {
+export const deleteTransaction = async (req, res, next)=> {
     try{
         await Transaction.findByIdAndDelete(req.params.id)
         res.status(201).json({

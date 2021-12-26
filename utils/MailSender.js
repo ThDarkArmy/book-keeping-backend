@@ -46,6 +46,3 @@ class MailSender{
 
 
 export default MailSender;
-
-const mail = new MailSender('jaccobrths@gmail.com', 'subject', 'message from nodemailer');
-mail.sendMail();
